@@ -1,5 +1,13 @@
-(() => {
+(function ensurejQuery(callback) {
+  if (window.jQuery) return callback();
+  const script = document.createElement('script');
+  script.src = 'https://code.jquery.com/jquery-3.6.3.min.js';
+  script.onload = () => callback();
+  script.onerror = () => console.error('jQuery yüklenemedi.');
+  document.head.appendChild(script);
+})(function() {
 
+    
     const buildHTML = () =>{
         const html = `
         <div class="container-products">
@@ -101,6 +109,14 @@
                 background-color:#fff;
                 cursor:pointer;
                 }
+                .favorite-button{
+                width:25px;
+                height:25px;
+                background-color:transparent;
+                border:0px;
+                padding:0px;
+                cursor:pointer;
+                }
                 .product-card{
                 flex: 0 0 calc(93% / 5);
                 border:1px solid #ededed;
@@ -173,6 +189,56 @@
                 background-color:#f28e00;
                 color:#fff;
                 }
+                @media only screen and (max-width: 1500px) {
+                .container-products {
+                    max-width: 1200px;
+                }
+                .product-card {
+                    flex: 0 0 calc(93% / 4);
+                }
+                }
+
+                @media only screen and (max-width: 1350px) {
+                .container-products {
+                    max-width: 1000px;
+                }
+                .product-card {
+                    flex: 0 0 calc(93% / 4);
+                }
+                }
+
+                @media only screen and (max-width: 1150px) {
+                .container-products {
+                    max-width: 850px;
+                }
+                .product-card {
+                    flex: 0 0 calc(93% / 3);
+                }
+                }
+
+                @media only screen and (max-width: 1000px) {
+                .container-products {
+                    max-width: 650px;
+                }
+                .product-card {
+                    flex: 0 0 calc(93% / 3);
+                }
+                }
+
+                @media only screen and (max-width: 820px) {
+                .container-products {
+                    max-width: 450px;
+                }
+                .product-card {
+                    flex: 0 0 calc(93% / 2);
+                }
+                }
+
+                @media only screen and (max-width: 600px) {
+                .container-products {
+                    max-width: 370px;
+                }
+                }
         `;
         $('<style>').addClass('carousel-style')
                     .html(css)
@@ -233,19 +299,18 @@ async function getData() {
                 }
                 $('.favorite-button').on('click', function() {
                     const id = $(this).data('id').toString();
-                    let savedIds = localStorage.getItem('savedIds');
-                    if (!savedIds) {
-                        savedIds = [];
+                    let favIds = localStorage.getItem('favIds');
+                    if (!favIds) {
+                        favIds = [];
                     } else {
-                        savedIds = JSON.parse(savedIds);
+                        favIds = JSON.parse(favIds);
                     }
-                    if (!savedIds.includes(id)) {
-                        savedIds.push(id);
+                    if (!favIds.includes(id)) {
+                        favIds.push(id);
                     }
                         
-                    localStorage.setItem('savedIds', JSON.stringify(savedIds));
+                    localStorage.setItem('favIds', JSON.stringify(favIds));
 
-                    console.log('Saved IDs:', savedIds);
                     });
             const $card = $(`
                 <div class="product-card">
@@ -306,4 +371,4 @@ async function getData() {
         renderData();
     }
     init();
-})(); 
+}); 
