@@ -18,7 +18,7 @@ Bu proje, ürünleri listeleyen, beğenme (favori) butonları bulunan ve yatay k
 ## Kullanım
 
 1. Projeyi klonlayın veya indirin.
-2. Proje dosyalarını herhangi bir HTTP sunucusunda veya doğrudan tarayıcıda açabilirsiniz.
+2. Proje dosyalarını herhangi bir HTTP sunucusunda veya bir HTML dosyası açıp Chrome Developer Tools console bölüne Js dosyasında kodu yapıştırıp enter tuşuna basarak tarayıcıda açabilirsiniz.
 3. Proje, ürün listesini uzaktaki JSON API'den çekip localStorage'a kaydeder.
 4. Ürünlerin sağ ve sol okları ile carousel kaydırılır.
 5. Beğenme butonuna tıklayarak ürünleri favorilerinize ekleyebilirsiniz. Favoriler localStorage'da saklanır.
