@@ -103,11 +103,13 @@
                 text-align:center;
                 right:20px;
                 fill:none;
+                border:1px solid transparent;
                 }
                 .favorite-product:hover{
                 fill:#f28e00;
                 background-color:#fff;
                 cursor:pointer;
+                border:1px solid #f28e00;
                 }
                 .favorite-button{
                 width:25px;
