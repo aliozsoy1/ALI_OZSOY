@@ -4,7 +4,7 @@
         const html = `
         <div class="container-products">
             <div class="carousel-title">
-                <h1>Sizin için Seçtiklerimiz</h1>
+                <h1>Beğenebileceğinizi düşündüklerimiz</h1>
             </div>
             <div class="carousel">
                 <div class="left-arrow"></div>
@@ -186,10 +186,22 @@
         
     };
 async function getData() {
+  const storageKey = 'productsData';
+
+  const storedData = localStorage.getItem(storageKey);
+  if (storedData) {
+    return JSON.parse(storedData);
+  }
+
   const url = "https://gist.githubusercontent.com/sevindi/8bcbde9f02c1d4abe112809c974e1f49/raw/9bf93b58df623a9b16f1db721cd0a7a539296cf0/products.json";
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-  return await res.json();
+
+  const data = await res.json();
+
+  localStorage.setItem(storageKey, JSON.stringify(data));
+
+  return data;
 }
 
     async function renderData() {
@@ -219,16 +231,34 @@ async function getData() {
                     
                 `;
                 }
+                $('.favorite-button').on('click', function() {
+                    const id = $(this).data('id').toString();
+                    let savedIds = localStorage.getItem('savedIds');
+                    if (!savedIds) {
+                        savedIds = [];
+                    } else {
+                        savedIds = JSON.parse(savedIds);
+                    }
+                    if (!savedIds.includes(id)) {
+                        savedIds.push(id);
+                    }
+                        
+                    localStorage.setItem('savedIds', JSON.stringify(savedIds));
+
+                    console.log('Saved IDs:', savedIds);
+                    });
             const $card = $(`
                 <div class="product-card">
                 <div class="favorite-product">
-                    <svg width="26" height="23" viewBox="0 0 26 23" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Group 3">
-                    <g id="heart">
-                    <path id="Shape" fill-rule="evenodd" clip-rule="evenodd" d="M22.6339 2.97449C21.4902 1.83033 19.9388 1.1875 18.3211 1.1875C16.7034 1.1875 15.152 1.83033 14.0084 2.97449L12.8332 4.14968L11.658 2.97449C9.27612 0.592628 5.41435 0.592627 3.03249 2.97449C0.650628 5.35635 0.650628 9.21811 3.03249 11.6L4.20769 12.7752L12.8332 21.4007L21.4587 12.7752L22.6339 11.6C23.778 10.4564 24.4208 8.90494 24.4208 7.28723C24.4208 5.66952 23.778 4.11811 22.6339 2.97449Z" stroke="#FF8A00" stroke-width="2.17391" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    </g>
-                    </svg>
+                    <button class="favorite-button" data-id="${data.id}">
+                        <svg width="26" height="23" viewBox="0 0 26 23" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Group 3">
+                        <g id="heart">
+                        <path id="Shape" fill-rule="evenodd" clip-rule="evenodd" d="M22.6339 2.97449C21.4902 1.83033 19.9388 1.1875 18.3211 1.1875C16.7034 1.1875 15.152 1.83033 14.0084 2.97449L12.8332 4.14968L11.658 2.97449C9.27612 0.592628 5.41435 0.592627 3.03249 2.97449C0.650628 5.35635 0.650628 9.21811 3.03249 11.6L4.20769 12.7752L12.8332 21.4007L21.4587 12.7752L22.6339 11.6C23.778 10.4564 24.4208 8.90494 24.4208 7.28723C24.4208 5.66952 23.778 4.11811 22.6339 2.97449Z" stroke="#FF8A00" stroke-width="2.17391" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        </g>
+                        </svg>
+                    </button>
                 </div>
                     <a href="${data.url}" target="_blank">
                         <div class="product-img">
