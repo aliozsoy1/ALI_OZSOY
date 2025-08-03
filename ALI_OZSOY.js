@@ -23,7 +23,7 @@
             </div>
         </div>
         `;
-        $('.product-detail').append(html);
+       $('body').append(html);
     };
     const buildCSS = () =>{
         const css = `
